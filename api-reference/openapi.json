@@ -1,0 +1,794 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "API JSON",
+    "description": "Documentación de la API JSON",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.json.com.pe"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/dni": {
+      "post": {
+        "summary": "Consultar información de un DNI",
+        "description": "Consulta la información asociada a un DNI",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaDniRequest"
+              },
+              "example": {
+                "dni": "12345678"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaDniResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "Exito",
+                  "data": {
+                    "numero": "12345678",
+                    "nombre_completo": "PEREZ GOMEZ, JUAN JOSE",
+                    "nombres": "JUAN JOSE",
+                    "apellido_paterno": "PEREZ",
+                    "apellido_materno": "GOMEZ",
+                    "codigo_verificacion": 9,
+                    "direccion": "",
+                    "direccion_completa": "",
+                    "ubigeo_reniec": "",
+                    "ubigeo_sunat": "",
+                    "ubigeo": [
+                      null,
+                      null,
+                      null
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se encontró información para el DNI enviado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDNI"
+                },
+                "example": {
+                  "success": false,
+                  "message": "No se encontró DNI"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ruc": {
+      "post": {
+        "summary": "Consultar información de un RUC",
+        "description": "Consulta la información asociada a un RUC",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaRucRequest"
+              },
+              "example": {
+                "ruc": "20123456789"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaRucResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": {
+                    "ruc": "20123456789",
+                    "nombre_o_razon_social": "HAMID S.A.C.",
+                    "estado": "SUSPENSION TEMPORAL",
+                    "condicion": "HABIDO",
+                    "departamento": "LIMA",
+                    "provincia": "LIMA",
+                    "distrito": "CERCADO DE LIMA",
+                    "direccion": "AV. NICOLÁS DE PIÉROLA 789.",
+                    "direccion_completa": "AV. NICOLÁS DE PIÉROLA 789., LIMA - LIMA - CERCADO DE LIMA",
+                    "ubigeo_sunat": "150137",
+                    "ubigeo": [
+                      "15",
+                      "1501",
+                      "150101"
+                    ],
+                    "es_agente_de_retencion": "NO",
+                    "es_agente_de_percepcion": "NO",
+                    "es_agente_de_percepcion_combustible": "NO",
+                    "es_buen_contribuyente": "SI"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se encontró información para el RUC enviado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseRuc"
+                },
+                "example": {
+                  "success": false,
+                  "message": "No se encontró RUC"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ruc/representantes": {
+      "post": {
+        "summary": "Consultar representante de un RUC",
+        "description": "Consulta representante legal por RUC",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaRucRepresentanteRequest"
+              },
+              "example": {
+                "ruc": "20123456789"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaRucRepresentanteResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": [
+                    {
+                      "tipo_de_documento": "DNI",
+                      "numero_de_documento": "7*****54",
+                      "nombre": "JUAN *****O ***NA",
+                      "cargo": "GERENTE GENERAL",
+                      "fecha_desde": "05/05/2012"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se encontró información para el RUC enviado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseRucRepresentante"
+                },
+                "example": {
+                  "success": false,
+                  "message": "No se encontró RUC"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ruc/establecimientos": {
+      "post": {
+        "summary": "Consultar establecimientos de un RUC",
+        "description": "Consulta establecimientos por RUC",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaRucEstablecimientosRequest"
+              },
+              "example": {
+                "ruc": "20123456789"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaRucEstablecimientosResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": [
+                    {
+                      "codigo": "0001",
+                      "tipo_establecimiento": "SU. SUCURSAL",
+                      "actividad_economica": "-",
+                      "direccion": "AV. NICOLÁS DE PIÉROLA 789.",
+                      "direccion_completa": "AV. NICOLÁS DE PIÉROLA 789., LIMA - LIMA - CERCADO DE LIMA",
+                      "departamento": "LIMA",
+                      "provincia": "LIMA",
+                      "distrito": "CERCADO DE LIMA",
+                      "ubigeo_sunat": "150101",
+                      "ubigeo": [
+                        "15",
+                        "1501",
+                        "150101"
+                      ]
+                    },
+                    {
+                      "codigo": "0002",
+                      "tipo_establecimiento": "SU. SUCURSAL",
+                      "actividad_economica": "-",
+                      "direccion": "AV. ALFONSO UGARTE 848.",
+                      "direccion_completa": "AV. ALFONSO UGARTE 848., LIMA - LIMA - CERCADO DE LIMA",
+                      "departamento": "LIMA",
+                      "provincia": "LIMA",
+                      "distrito": "LIMA",
+                      "ubigeo_sunat": "150101",
+                      "ubigeo": [
+                        "15",
+                        "1501",
+                        "150101"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se encontró información para el RUC enviado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseRucEstablecimientos"
+                },
+                "example": {
+                  "success": false,
+                  "message": "No se encontró RUC"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sunat/guia/xml/{numRuc}-{tipoDocumento}-{numSerieComprobante}-{numDocumentoComprobante}": {
+      "get": {
+        "summary": "Obtener XML de una guía",
+        "description": "Obtiene el contenido XML de una guía utilizando el RUC, tipo de documento, serie y número de comprobante.",
+        "parameters": [
+          {
+            "name": "numRuc",
+            "in": "path",
+            "description": "Número de RUC del emisor.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "20123456789"
+            }
+          },
+          {
+            "name": "tipoDocumento",
+            "in": "path",
+            "description": "Tipo de documento del comprobante.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "09"
+            }
+          },
+          {
+            "name": "numSerieComprobante",
+            "in": "path",
+            "description": "Número de serie del comprobante.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "T001"
+            }
+          },
+          {
+            "name": "numDocumentoComprobante",
+            "in": "path",
+            "description": "Número del documento o comprobante.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "00000001"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "XML obtenido correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GuiaXmlResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "Exito",
+                  "data": "PERlc3BhdGNoQWR2aWNl..."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se encontró información para el DNI enviado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseXML"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ConsultaDniRequest": {
+        "type": "object",
+        "required": [
+          "dni"
+        ],
+        "properties": {
+          "dni": {
+            "type": "string",
+            "description": "DNI de 8 dígitos del titular a consultar.",
+            "example": "12345678"
+          }
+        }
+      },
+      "ConsultaDniResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "numero": {
+                "type": "string",
+                "description": "Número de documento encontrado.",
+                "example": "27427864"
+              },
+              "nombre_completo": {
+                "type": "string",
+                "description": "Nombre completo del titular.",
+                "example": "PEREZ GOMEZ, JUAN JOSE"
+              },
+              "nombres": {
+                "type": "string",
+                "description": "Nombres de pila de la persona.",
+                "example": "JUAN JOSE"
+              },
+              "apellido_paterno": {
+                "type": "string",
+                "description": "Primer apellido (apellido paterno) de la persona.",
+                "example": "PEREZ"
+              },
+              "apellido_materno": {
+                "type": "string",
+                "description": "Segundo apellido (apellido materno) de la persona.",
+                "example": "GOMEZ"
+              },
+              "codigo_verificacion": {
+                "type": "string",
+                "description": "Código de verificación del DNI (dígito verificador).",
+                "example": "9"
+              },
+              "direccion": {
+                "type": "string",
+                "description": "Dirección de la persona."
+              },
+              "direccion_completa": {
+                "type": "string",
+                "description": "Dirección completa de la persona."
+              },
+              "ubigeo_reniec": {
+                "type": "string",
+                "description": "Ubigeo según RENIEC."
+              },
+              "ubigeo_sunat": {
+                "type": "string",
+                "description": "Ubigeo según SUNAT."
+              },
+              "ubigeo": {
+                "type": "array",
+                "description": "Información del ubigeo asociada al titular.",
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "example": [
+                  null,
+                  null,
+                  null
+                ]
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseDNI": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del error.",
+            "example": "No se encontró DNI"
+          }
+        }
+      },
+      "ConsultaRucRequest": {
+        "type": "object",
+        "required": [
+          "ruc"
+        ],
+        "properties": {
+          "ruc": {
+            "type": "string",
+            "description": "Ruc de 11 dígitos a consultar.",
+            "example": "20123456789"
+          }
+        }
+      },
+      "ConsultaRucResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "ruc": {
+                "type": "string",
+                "description": "Número de identificación (RUC).",
+                "example": "20123456789"
+              },
+              "nombre_o_razon_social": {
+                "type": "string",
+                "description": "Nombre o Razon Social de la empresa."
+              },
+              "estado": {
+                "type": "string",
+                "description": "Estado de la empresa."
+              },
+              "condicion": {
+                "type": "string",
+                "description": "Condición de la empresa."
+              },
+              "departamento": {
+                "type": "string",
+                "description": "Departamento de la empresa."
+              },
+              "provincia": {
+                "type": "string",
+                "description": "CProvincia de la empresa."
+              },
+              "distrito": {
+                "type": "string",
+                "description": "Distrito de la empresa."
+              },
+              "direccion": {
+                "type": "string",
+                "description": "Dirección específica."
+              },
+              "ubigeo_sunat": {
+                "type": "string",
+                "description": "Ubigeo según SUNAT."
+              },
+              "ubigeo": {
+                "type": "string",
+                "description": "Ubigeo desglosado por componentes."
+              },
+              "es_agente_de_retencion": {
+                "type": "string",
+                "description": "Indica si es agente de percepción."
+              },
+              "es_agente_de_percepcion": {
+                "type": "string",
+                "description": "Indica si es agente de percepción."
+              },
+              "es_agente_de_percepcion_combustible": {
+                "type": "string",
+                "description": "Indica si es agente de percepción de combustibles."
+              },
+              "es_buen_contribuyente": {
+                "type": "string",
+                "description": "Indica si está catalogado como buen contribuyente."
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseRuc": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del error.",
+            "example": "No se encontró RUC"
+          }
+        }
+      },
+      "ConsultaRucRepresentanteRequest": {
+        "type": "object",
+        "required": [
+          "ruc"
+        ],
+        "properties": {
+          "ruc": {
+            "type": "string",
+            "description": "Ruc de 11 dígitos a consultar.",
+            "example": "20123456789"
+          }
+        }
+      },
+      "ConsultaRucRepresentanteResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "tipo_de_documento": {
+                "type": "string",
+                "description": "Tipo de documento del representate."
+              },
+              "numero_de_documento": {
+                "type": "string",
+                "description": "Numero de documento del representante."
+              },
+              "nombre": {
+                "type": "string",
+                "description": "Nombre del representante."
+              },
+              "cargo": {
+                "type": "string",
+                "description": "Cargo del representate."
+              },
+              "fecha_desde": {
+                "type": "string",
+                "description": "Fecha desde."
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseRucRepresentante": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del error.",
+            "example": "No se encontró RUC"
+          }
+        }
+      },
+      "ConsultaRucEstablecimientosRequest": {
+        "type": "object",
+        "required": [
+          "ruc"
+        ],
+        "properties": {
+          "ruc": {
+            "type": "string",
+            "description": "Ruc de 11 dígitos a consultar.",
+            "example": "20123456789"
+          }
+        }
+      },
+      "ConsultaRucEstablecimientosResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "codigo": {
+                "type": "string",
+                "description": "Codigo del local."
+              },
+              "tipo_establecimiento": {
+                "type": "string",
+                "description": "Tipo de establecimiento del local."
+              },
+              "actividad_economica": {
+                "type": "string",
+                "description": "Actividad economica del local."
+              },
+              "departamento": {
+                "type": "string",
+                "description": "Departamento del local."
+              },
+              "provincia": {
+                "type": "string",
+                "description": "Provincia del local."
+              },
+              "distrito": {
+                "type": "string",
+                "description": "Distrito del local."
+              },
+              "direccion": {
+                "type": "string",
+                "description": "Dirección específica."
+              },
+              "direccion_completa": {
+                "type": "string",
+                "description": "Dirección completa, incluyendo distrito, provincia y departamento."
+              },
+              "ubigeo_sunat": {
+                "type": "string",
+                "description": "Ubigeo según SUNAT."
+              },
+              "ubigeo": {
+                "type": "array",
+                "description": "Ubigeo desglosado por componentes."
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseRucEstablecimientos": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del error.",
+            "example": "No se encontró RUC"
+          }
+        }
+      },
+      "GuiaXmlResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la operación fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "string",
+            "description": "Contenido XML codificado o serializado.",
+            "example": "PERlc3BhdGNoQWR2aWNl..."
+          }
+        }
+      },
+      "ErrorResponseXML": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "description": "Estado de la solicitud."
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}
