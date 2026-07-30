@@ -1250,11 +1250,8 @@
               "tipo": {
                 "type": "string",
                 "description": "Tipo de declaración omisa (ej. PDT IGV - Renta)."
-              },
-              "fecha_presentacion": {
-                "type": "string",
-                "description": "Fecha de presentación. Puede ser \"-\" si no se presentó."
               }
+              
             }
           }
         }
