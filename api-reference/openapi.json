@@ -611,6 +611,67 @@
         }
       }
     },
+    "/ruc/tipo_de_cambio": {
+      "post": {
+        "description": "Consulta tipo de cambio por fecha..",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaCambioRequest"
+              },
+              "example": {
+                "fecha": "2026-01-05"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaCambioResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": [
+                    {
+                      "moneda": "USD",
+                      "fecha_busqueda": "2026-01-05",
+                      "fecha_sunat": "2026-01-05",
+                      "venta": 3.381,
+                      "compra": 3.37,
+                      "date": "2026-01-05",
+                      "sale": 3.381,
+                      "purchase": 3.37
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseCambio"
+                },
+                "example": {
+                  "success": false,
+                  "message": "No se encontraron resultados"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sunat/guia/xml/{numRuc}-{tipoDocumento}-{numSerieComprobante}-{numDocumentoComprobante}": {
       "get": {
         "summary": "Obtener XML de una guía",
@@ -1377,6 +1438,82 @@
         }
       },
       "ErrorResponseRucRazon": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsultaCambioRequest": {
+        "type": "object",
+        "required": [
+          "fecha"
+        ],
+        "properties": {
+          "fecha": {
+            "type": "string",
+            "description": "Fecha de consulta en formato yyyy-mm-dd.",
+            "example": "2026-01-05"
+          }
+        }
+      },
+      "ConsultaCambioResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "moneda": {
+                "type": "string",
+                "description": "Código de la moneda consultada."
+              },
+              "fecha_busqueda": {
+                "type": "string",
+                "description": "Fecha solicitada para la consulta."
+              },
+              "fecha_sunat": {
+                "type": "string",
+                "description": "Última fecha disponible en SUNAT."
+              },
+              "venta": {
+                "type": "number",
+                "description": "Tipo de cambio venta."
+              },
+              "compra": {
+                "type": "number",
+                "description": "Tipo de cambio compra."
+              },
+              "date": {
+                "type": "number",
+                "description": "Fecha en formato ISO (alias de fecha_sunat)"
+              },
+              "sale": {
+                "type": "number",
+                "description": "Tipo de cambio venta (alias)"
+              },
+              "purchase": {
+                "type": "number",
+                "description": "Tipo de cambio compra (alias)"
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseCambio": {
         "type": "object",
         "properties": {
           "success": {
