@@ -1,4 +1,37 @@
 ---
 title: 'Descarga Guía JSON'
-openapi: 'GET /api/sunat/guia/xml/{numRuc}-{tipoDocumento}-{numSerieComprobante}-{numDocumentoComprobante}'
+openapi: 'GET /sunat/guia/json/{numRuc}-{tipoDocumento}-{numSerieComprobante}-{numDocumentoComprobante}'
 ---
+
+## Parámetros de la guía
+
+| Parámetro | Ejemplo | Descripción |
+|-----------|---------|-------------|
+| numRuc | 20123456789 | Número de RUC del emisor. |
+| tipoDocumento | 09 | Tipo de documento electrónico. |
+| numSerieComprobante | T112 | Serie del comprobante. |
+| numDocumentoComprobante | 6621 | Correlativo. |
+
+### URL de ejemplo
+
+```text
+GET /api/sunat/guia/json/202645878-09-T112-6621
+```
+
+### Ejemplo de respuesta
+
+```json
+{
+  "success": true,
+  "message": "Exito",
+  "data": {
+    "codCpe": "09",
+    "numRuc": "20123456789",
+    "numSerie": "T112",
+    "numCpe": 6621,
+    "emisor": { "...": "..." },
+    "receptor": { "...": "..." },
+    "traslado": { "...": "..." }
+  }
+}
+```
