@@ -901,7 +901,7 @@
     },
     "/placa": {
       "post": {
-        "description": "Consulta cédula de identidad por número.",
+        "description": "Consulta placa por número.",
         "requestBody": {
           "description": "Datos necesarios para realizar la consulta.",
           "required": true,
@@ -946,6 +946,63 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponsePlaca"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/soat": {
+      "post": {
+        "description": "Consulta SOAT por placa.",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaSoatRequest"
+              },
+              "example": {
+                "placa": "XAV856"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaSoatResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": {
+                    "placa": "XAV856",
+                    "nombre_compania": "SA Seguros",
+                    "fecha_inicio": "05/01/2026",
+                    "fecha_fin": "05/05/2026",
+                    "estado": "VENCIDO",
+                    "numero_poliza": "0023584606840000000856987"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Recurso no encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSoat"
                 },
                 "example": {
                   "success": false,
@@ -2158,6 +2215,74 @@
         }
       },
       "ErrorResponsePlaca": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsultaSoatRequest": {
+        "type": "object",
+        "required": [
+          "placa"
+        ],
+        "properties": {
+          "placa": {
+            "type": "string",
+            "description": "La placa a consultar.",
+            "example": "XAV856"
+          }
+        }
+      },
+      "ConsultaSoatResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "placa": {
+                "type": "string",
+                "description": "Placa del vehiculo."
+              },
+              "nombre_compania": {
+                "type": "string",
+                "description": "Nombre de la compañia."
+              },
+              "fecha_inicio": {
+                "type": "string",
+                "description": "Fecha de Inicio."
+              },
+              "fecha_fin": {
+                "type": "string",
+                "description": "Fecha Fin."
+              },
+              "estado": {
+                "type": "string",
+                "description": "Estado del SOAT."
+              },
+              "numero_poliza": {
+                "type": "string",
+                "description": "Numero de Poliza."
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseSoat": {
         "type": "object",
         "properties": {
           "success": {
