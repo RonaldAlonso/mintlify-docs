@@ -297,6 +297,74 @@
         }
       }
     },
+    "/ruc/domicilio-fiscal": {
+      "post": {
+        "summary": "Consulta domicilio fiscal por RUC.",
+        "description": "Consulta domicilio fiscal por RUC.",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaRucDomicilioRequest"
+              },
+              "example": {
+                "ruc": "20123456789"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaRucDomicilioResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": [
+                    {
+                      "codigo": "0001",
+                      "tipo_de_establecimiento": "DOMICILIO FISCAL",
+                      "actividad_economica": "-",
+                      "direccion": "AV. NICOLÁS DE PIÉROLA.",
+                      "direccion_completa": "AV. NICOLÁS DE PIÉROLA., LIMA - LIMA - CERCADO DE LIMA",
+                      "departamento": "LIMA",
+                      "provincia": "LIMA",
+                      "distrito": "CERCADO DE LIMA",
+                      "ubigeo_sunat": "150101",
+                      "ubigeo": [
+                        "15",
+                        "1501",
+                        "150101"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se encontró información para el RUC enviado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseRucDomicilio"
+                },
+                "example": {
+                  "success": false,
+                  "message": "No se encontró RUC"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sunat/guia/xml/{numRuc}-{tipoDocumento}-{numSerieComprobante}-{numDocumentoComprobante}": {
       "get": {
         "summary": "Obtener XML de una guía",
@@ -735,6 +803,94 @@
         }
       },
       "ErrorResponseRucEstablecimientos": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del error.",
+            "example": "No se encontró RUC"
+          }
+        }
+      },
+      "ConsultaRucDomicilioRequest": {
+        "type": "object",
+        "required": [
+          "ruc"
+        ],
+        "properties": {
+          "ruc": {
+            "type": "string",
+            "description": "Ruc de 11 dígitos a consultar.",
+            "example": "20123456789"
+          }
+        }
+      },
+      "ConsultaRucDomicilioResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "codigo": {
+                "type": "string",
+                "description": "Codigo del local."
+              },
+              "tipo_de_establecimiento": {
+                "type": "string",
+                "description": "Tipo de establecimiento del local."
+              },
+              "actividad_economica": {
+                "type": "string",
+                "description": "Actividad economica del local."
+              },
+              "departamento": {
+                "type": "string",
+                "description": "Departamento del local."
+              },
+              "provincia": {
+                "type": "string",
+                "description": "Provincia del local."
+              },
+              "distrito": {
+                "type": "string",
+                "description": "Distrito del local."
+              },
+              "direccion": {
+                "type": "string",
+                "description": "Dirección específica."
+              },
+              "direccion_completa": {
+                "type": "string",
+                "description": "Dirección completa, incluyendo distrito, provincia y departamento."
+              },
+              "ubigeo_sunat": {
+                "type": "string",
+                "description": "Ubigeo según SUNAT."
+              },
+              "ubigeo": {
+                "type": "array",
+                "description": "Ubigeo desglosado por componentes."
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseRucDomicilio": {
         "type": "object",
         "properties": {
           "success": {
