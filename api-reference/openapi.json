@@ -365,6 +365,69 @@
         }
       }
     },
+    "/ruc/deuda-coactiva": {
+      "post": {
+        "description": "Consulta deuda coactiva por RUC.",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaRucDeudaRequest"
+              },
+              "example": {
+                "ruc": "20123456789"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaRucDeudaResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": [
+                    {
+                      "monto": "33552244.00",
+                      "periodo_tibutario": "1999 - 10",
+                      "fecha_inicio_cobranza": "2000-05-05",
+                      "entidad_asociada": "Tesoro Público"
+                    },
+                    {
+                      "monto": "33552244.00",
+                      "periodo_tibutario": "1999 - 11",
+                      "fecha_inicio_cobranza": "2000-05-05",
+                      "entidad_asociada": "Tesoro Público"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseRucDeuda"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sunat/guia/xml/{numRuc}-{tipoDocumento}-{numSerieComprobante}-{numDocumentoComprobante}": {
       "get": {
         "summary": "Obtener XML de una guía",
@@ -902,6 +965,68 @@
             "type": "string",
             "description": "Mensaje descriptivo del error.",
             "example": "No se encontró RUC"
+          }
+        }
+      },
+      "ConsultaRucDeudaRequest": {
+        "type": "object",
+        "required": [
+          "ruc"
+        ],
+        "properties": {
+          "ruc": {
+            "type": "string",
+            "description": "El RUC a consultar.",
+            "example": "20123456789"
+          }
+        }
+      },
+      "ConsultaRucDeudaResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "monto": {
+                "type": "string",
+                "description": "Monto de la deuda coactiva."
+              },
+              "periodo_tibutario": {
+                "type": "string",
+                "description": "TPeríodo tributario."
+              },
+              "fecha_inicio_cobranza": {
+                "type": "string",
+                "description": "Fecha de inicio de cobranza en formato yyyy-mm-dd."
+              },
+              "entidad_asociada": {
+                "type": "string",
+                "description": "Entidad asociada a la deuda."
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseRucDeuda": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa."
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del error."
           }
         }
       },
