@@ -3217,7 +3217,7 @@
           },
           "data": {
             "type": "string",
-            "description": "Contenido XML codificado o serializado.",
+            "description": "XML de la guía codificado en Base64.",
             "example": "PTYDF553BhdGNoQWR2aWNl..."
           }
         }
@@ -3251,8 +3251,7 @@
           },
           "data": {
             "type": "object",
-            "description": "Contenido XML codificado o serializado.",
-            "example": "Datos detallados de la respuesta"
+            "description": "Datos detallados de la respuesta."
           }
         }
       },
