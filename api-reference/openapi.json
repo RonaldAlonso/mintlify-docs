@@ -720,6 +720,75 @@
         }
       }
     },
+    "/cpe": {
+      "post": {
+        "description": "Valida comprobantes electrónicos. Verifica estado y datos del comprobante.",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaCpeRequest"
+              },
+              "example": {
+                "ruc_emisor": "<string>",
+                "codigo_tipo_documento": "<string>",
+                "serie_documento": "<string>",
+                "numero_documento": "<string>",
+                "fecha_de_emision": "<string>",
+                "total": "<string>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaCpeResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "ACEPTADO",
+                  "data": {
+                    "ruc_emisor": "20123456789",
+                    "codigo_tipo_documento": "03",
+                    "serie_documento": "B012",
+                    "numero_documento": "12374",
+                    "fecha_de_emision": "08/05/2026",
+                    "total": 30,
+                    "comprobante_estado_codigo": "1",
+                    "comprobante_estado_descripcion": "ACEPTADO",
+                    "empresa_estado_codigo": "00",
+                    "empresa_estado_description": "ACTIVO",
+                    "empresa_condicion_codigo": "00",
+                    "empresa_condicion_descripcion": "HABIDO",
+                    "observaciones": []
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseCpe"
+                },
+                "example": {
+                  "success": false,
+                  "message": "No se encontró RUC"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sunat/guia/xml/{numRuc}-{tipoDocumento}-{numSerieComprobante}-{numDocumentoComprobante}": {
       "get": {
         "summary": "Obtener XML de una guía",
@@ -1610,6 +1679,126 @@
         }
       },
       "ErrorResponseDR": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsultaCpeRequest": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "ruc_emisor": {
+            "type": "string",
+            "description": "RUC Emisor del comprobante.",
+            "example": "12345678"
+          },
+          "codigo_tipo_documento": {
+            "type": "string",
+            "description": "Tipo Documento del comprobante.",
+            "example": "12345678"
+          },
+          "serie_documento": {
+            "type": "string",
+            "description": "Serie del comprobante.",
+            "example": "12345678"
+          },
+          "numero_documento": {
+            "type": "string",
+            "description": "Correlativo del comprobante.",
+            "example": "12345678"
+          },
+          "fecha_de_emision": {
+            "type": "string",
+            "description": "Debe tener el formato dd/mm/yyyy.",
+            "example": "12345678"
+          },
+          "total": {
+            "type": "string",
+            "description": "Total del comprobante.",
+            "example": "12345678"
+          }
+          
+        }
+      },
+      "ConsultaCpeResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "ruc_emisor": {
+                "type": "string",
+                "description": "RUC del emisor del comprobante."
+              },
+              "codigo_tipo_documento": {
+                "type": "string",
+                "description": "Código del tipo de documento (ej. 01, 03)."
+              },
+              "serie_documento": {
+                "type": "string",
+                "description": "Serie del comprobante."
+              },
+              "numero_documento": {
+                "type": "string",
+                "description": "Número del comprobante."
+              },
+              "fecha_de_emision": {
+                "type": "string",
+                "description": "Fecha de emisión del comprobante en formato dd/mm/yyyy."
+              },
+              "total": {
+                "type": "string",
+                "description": "Importe total declarado en el comprobante."
+              },
+              "comprobante_estado_codigo": {
+                "type": "string",
+                "description": "Código del estado del comprobante."
+              },
+              "comprobante_estado_descripcion": {
+                "type": "string",
+                "description": "Descripción del estado del comprobante."
+              },
+              "empresa_estado_codigo": {
+                "type": "string",
+                "description": "Código del estado del contribuyente emisor."
+              },
+              "empresa_estado_description": {
+                "type": "string",
+                "description": "Descripción del estado del contribuyente emisor."
+              },
+              "empresa_condicion_codigo": {
+                "type": "string",
+                "description": "Código de la condición del contribuyente emisor."
+              },
+              "empresa_condicion_descripcion": {
+                "type": "string",
+                "description": "Descripción de la condición del contribuyente emisor."
+              },
+              "observaciones": {
+                "type": "string[]",
+                "description": "Observaciones reportadas por SUNAT."
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseCpe": {
         "type": "object",
         "properties": {
           "success": {
