@@ -2807,7 +2807,6 @@
                 "type": "string",
                 "description": "Archivo ZIP codificado en Base64 que contiene el PDF generado."
               }
-              }
             }
           }
         }
