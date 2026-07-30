@@ -911,7 +911,7 @@
                 "$ref": "#/components/schemas/ConsultaPlacaRequest"
               },
               "example": {
-                "placa": "XAV856"
+                "placa": "ABC789"
               }
             }
           }
@@ -928,7 +928,7 @@
                   "success": true,
                   "message": "exito",
                   "data": {
-                    "placa": "XAV856",
+                    "placa": "ABC789",
                     "marca": "LAB",
                     "modelo": "LAB-XY",
                     "serie": "2BD22221A988951478",
@@ -969,7 +969,7 @@
                 "$ref": "#/components/schemas/ConsultaSoatRequest"
               },
               "example": {
-                "placa": "XAV856"
+                "placa": "ABC789"
               }
             }
           }
@@ -986,7 +986,7 @@
                   "success": true,
                   "message": "exito",
                   "data": {
-                    "placa": "XAV856",
+                    "placa": "ABC789",
                     "nombre_compania": "SA Seguros",
                     "fecha_inicio": "05/01/2026",
                     "fecha_fin": "05/05/2026",
@@ -1003,6 +1003,87 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponseSoat"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/revision-tecnica": {
+      "post": {
+        "description": "Consulta revisión técnica por placa.",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaRevisionRequest"
+              },
+              "example": {
+                "placa": "ABC789"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaRevisionResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": [
+                    {
+                      "placa": "ABC123",
+                      "tipo_documento": "NRO DE CERTIFICADO",
+                      "numero_certificado": "C-2024-370-561-000479",
+                      "vigente_desde": "12/05/2025",
+                      "vigente_hasta": "12/05/2026",
+                      "resultado_inspeccion": "APROBADO",
+                      "estado": "VENCIDO",
+                      "empresa_certificadora": "CENTRO DE INSPECCION S.A.C.",
+                      "direccion": "AV. NICOLÁS DE PIÉROLA - LIMA - LIMA - CERCADO DE LIMA",
+                      "ambito": "NINGUNO",
+                      "tipo_servicio": "PARTICULAR",
+                      "observaciones": "Sin observaciones",
+                      "orden": "ULTIMO"
+                    },
+                    {
+                      "placa": "ABC123",
+                      "tipo_documento": "NRO DE INFORME",
+                      "numero_certificado": "I-2024-370-561-000087",
+                      "vigente_desde": "12/05/2025",
+                      "vigente_hasta": "",
+                      "resultado_inspeccion": "DESAPROBADO",
+                      "estado": "",
+                      "empresa_certificadora": "CENTRO DE INSPECCION S.A.C.",
+                      "direccion": "AV. NICOLÁS DE PIÉROLA - LIMA - LIMA - CERCADO DE LIMA",
+                      "ambito": "NINGUNO",
+                      "tipo_servicio": "PARTICULAR",
+                      "observaciones": "Sin observaciones",
+                      "orden": "PENULTIMO"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Recurso no encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseRevision"
                 },
                 "example": {
                   "success": false,
@@ -2162,7 +2243,7 @@
           "placa": {
             "type": "string",
             "description": "La placa a consultar.",
-            "example": "XAV856"
+            "example": "ABC789"
           }
         }
       },
@@ -2234,7 +2315,7 @@
           "placa": {
             "type": "string",
             "description": "La placa a consultar.",
-            "example": "XAV856"
+            "example": "ABC789"
           }
         }
       },
@@ -2283,6 +2364,102 @@
         }
       },
       "ErrorResponseSoat": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsultaRevisionRequest": {
+        "type": "object",
+        "required": [
+          "placa"
+        ],
+        "properties": {
+          "placa": {
+            "type": "string",
+            "description": "La placa a consultar.",
+            "example": "ABC789"
+          }
+        }
+      },
+      "ConsultaRevisionResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "placa": {
+                "type": "string",
+                "description": "Placa del vehiculo."
+              },
+              "tipo_documento": {
+                "type": "string",
+                "description": "Tipo de documento (NRO DE CERTIFICADO, NRO DE INFORME)"
+              },
+              "numero_certificado": {
+                "type": "string",
+                "description": "Número de certificado o informe."
+              },
+              "vigente_desde": {
+                "type": "string",
+                "description": "Fecha de inicio de vigencia."
+              },
+              "vigente_hasta": {
+                "type": "string",
+                "description": "Fecha de fin de vigencia."
+              },
+              "resultado_inspeccion": {
+                "type": "string",
+                "description": "Resultado de la inspección (APROBADO, DESAPROBADO)"
+              },
+              "estado": {
+                "type": "string",
+                "description": "Estado del certificado (VENCIDO, VIGENTE, etc.)"
+              },
+              "empresa_certificadora": {
+                "type": "string",
+                "description": "Nombre de la empresa certificadora."
+              },
+              "direccion": {
+                "type": "string",
+                "description": "Dirección del centro de inspección."
+              },
+              "ambito": {
+                "type": "string",
+                "description": "Ámbito de la inspección."
+              },
+              "tipo_servicio": {
+                "type": "string",
+                "description": "Tipo de servicio del vehículo (PARTICULAR, etc.)"
+              },
+              "observaciones": {
+                "type": "string",
+                "description": "Observaciones de la inspección."
+              },
+              "orden": {
+                "type": "string",
+                "description": "Orden cronológico del registro (ULTIMO, PENULTIMO, ANTEPENULTIMO)"
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseRevision": {
         "type": "object",
         "properties": {
           "success": {
