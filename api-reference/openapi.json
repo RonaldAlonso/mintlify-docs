@@ -554,6 +554,63 @@
         }
       }
     },
+    "/ruc/razon_social": {
+      "post": {
+        "description": "Búsqueda por razón social.",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaRucRazonRequest"
+              },
+              "example": {
+                "razon_social": "LAB"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaRucRazonResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": [
+                    {
+                      "ruc": "20123456789",
+                      "nombre_o_razon_social": "LAB.",
+                      "ubicacion": "LIMA",
+                      "estado": "ACTIVO"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unexpected error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseRucRazon"
+                },
+                "example": {
+                  "success": false,
+                  "message": "No se encontraron resultados"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sunat/guia/xml/{numRuc}-{tipoDocumento}-{numSerieComprobante}-{numDocumentoComprobante}": {
       "get": {
         "summary": "Obtener XML de una guía",
@@ -1260,6 +1317,66 @@
         }
       },
       "ErrorResponseRucOmisiones": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsultaRucRazonRequest": {
+        "type": "object",
+        "required": [
+          "razon_social"
+        ],
+        "properties": {
+          "razon_social": {
+            "type": "string",
+            "description": "La razón social a buscar.",
+            "example": "LAB"
+          }
+        }
+      },
+      "ConsultaRucRazonResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "ruc": {
+                "type": "string",
+                "description": "RUC de la empresa."
+              },
+              "nombre_o_razon_social": {
+                "type": "string",
+                "description": "Nombre o razón social de la empresa."
+              },
+              "ubicacion": {
+                "type": "string",
+                "description": "Ubicación de la empresa."
+              },
+              "estado": {
+                "type": "string",
+                "description": "Estado de la empresa (ACTIVO, etc.)"
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseRucRazon": {
         "type": "object",
         "properties": {
           "success": {
