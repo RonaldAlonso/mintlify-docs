@@ -899,6 +899,64 @@
         }
       }
     },
+    "/placa": {
+      "post": {
+        "description": "Consulta cédula de identidad por número.",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaPlacaRequest"
+              },
+              "example": {
+                "placa": "XAV856"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaPlacaResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": {
+                    "placa": "XAV856",
+                    "marca": "LAB",
+                    "modelo": "LAB-XY",
+                    "serie": "2BD22221A988951478",
+                    "color": "NEGRO",
+                    "motor": "8569632",
+                    "vin": "9HJI6698858778"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Recurso no encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePlaca"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sunat/guia/xml/{numRuc}-{tipoDocumento}-{numSerieComprobante}-{numDocumentoComprobante}": {
       "get": {
         "summary": "Obtener XML de una guía",
@@ -2028,6 +2086,78 @@
         }
       },
       "ErrorResponseCi": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsultaPlacaRequest": {
+        "type": "object",
+        "required": [
+          "placa"
+        ],
+        "properties": {
+          "placa": {
+            "type": "string",
+            "description": "La placa a consultar.",
+            "example": "XAV856"
+          }
+        }
+      },
+      "ConsultaPlacaResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "placa": {
+                "type": "string",
+                "description": "Placa del vehiculo."
+              },
+              "marca": {
+                "type": "string",
+                "description": "Marca del vehiculo."
+              },
+              "modelo": {
+                "type": "string",
+                "description": "Modelo del vehiculo."
+              },
+              "serie": {
+                "type": "string",
+                "description": "Serie del vehiculo."
+              },
+              "color": {
+                "type": "string",
+                "description": "Color del vehiculo."
+              },
+              "motor": {
+                "type": "string",
+                "description": "Motor del vehiculo."
+              },
+              "vin": {
+                "type": "string",
+                "description": "VIN del vehiculo."
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponsePlaca": {
         "type": "object",
         "properties": {
           "success": {
