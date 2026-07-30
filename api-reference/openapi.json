@@ -1924,7 +1924,7 @@
           "ce"
         ],
         "properties": {
-          "ruc_emisor": {
+          "ce": {
             "type": "string",
             "description": "El carnet de extranjería a consultar.",
             "example": "000000111"
@@ -1984,7 +1984,7 @@
           "ci"
         ],
         "properties": {
-          "ruc_emisor": {
+          "ci": {
             "type": "string",
             "description": "La cédula de identidad a consultar.",
             "example": "000000111"
