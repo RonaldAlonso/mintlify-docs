@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://api.json.com.pe"
+      "url": "https://api.json.com.pe/api"
     }
   ],
   "security": [
@@ -18,7 +18,6 @@
   "paths": {
     "/dni": {
       "post": {
-        "summary": "Consultar información de un DNI",
         "description": "Consulta la información asociada a un DNI",
         "requestBody": {
           "description": "Datos necesarios para realizar la consulta.",
@@ -85,7 +84,6 @@
     },
     "/ruc": {
       "post": {
-        "summary": "Consultar información de un RUC",
         "description": "Consulta la información asociada a un RUC",
         "requestBody": {
           "description": "Datos necesarios para realizar la consulta.",
@@ -120,8 +118,8 @@
                     "departamento": "LIMA",
                     "provincia": "LIMA",
                     "distrito": "CERCADO DE LIMA",
-                    "direccion": "AV. NICOLÁS DE PIÉROLA 789.",
-                    "direccion_completa": "AV. NICOLÁS DE PIÉROLA 789., LIMA - LIMA - CERCADO DE LIMA",
+                    "direccion": "AV. NICOLÁS DE PIÉROLA.",
+                    "direccion_completa": "AV. NICOLÁS DE PIÉROLA., LIMA - LIMA - CERCADO DE LIMA",
                     "ubigeo_sunat": "150137",
                     "ubigeo": [
                       "15",
@@ -156,7 +154,6 @@
     },
     "/ruc/representantes": {
       "post": {
-        "summary": "Consultar representante de un RUC",
         "description": "Consulta representante legal por RUC",
         "requestBody": {
           "description": "Datos necesarios para realizar la consulta.",
@@ -215,7 +212,6 @@
     },
     "/ruc/establecimientos": {
       "post": {
-        "summary": "Consultar establecimientos de un RUC",
         "description": "Consulta establecimientos por RUC",
         "requestBody": {
           "description": "Datos necesarios para realizar la consulta.",
@@ -247,8 +243,8 @@
                       "codigo": "0001",
                       "tipo_establecimiento": "SU. SUCURSAL",
                       "actividad_economica": "-",
-                      "direccion": "AV. NICOLÁS DE PIÉROLA 789.",
-                      "direccion_completa": "AV. NICOLÁS DE PIÉROLA 789., LIMA - LIMA - CERCADO DE LIMA",
+                      "direccion": "AV. NICOLÁS DE PIÉROLA.",
+                      "direccion_completa": "AV. NICOLÁS DE PIÉROLA., LIMA - LIMA - CERCADO DE LIMA",
                       "departamento": "LIMA",
                       "provincia": "LIMA",
                       "distrito": "CERCADO DE LIMA",
@@ -263,8 +259,8 @@
                       "codigo": "0002",
                       "tipo_establecimiento": "SU. SUCURSAL",
                       "actividad_economica": "-",
-                      "direccion": "AV. ALFONSO UGARTE 848.",
-                      "direccion_completa": "AV. ALFONSO UGARTE 848., LIMA - LIMA - CERCADO DE LIMA",
+                      "direccion": "AV. ALFONSO UGARTE.",
+                      "direccion_completa": "AV. ALFONSO UGARTE., LIMA - LIMA - CERCADO DE LIMA",
                       "departamento": "LIMA",
                       "provincia": "LIMA",
                       "distrito": "LIMA",
@@ -299,7 +295,6 @@
     },
     "/ruc/domicilio-fiscal": {
       "post": {
-        "summary": "Consulta domicilio fiscal por RUC.",
         "description": "Consulta domicilio fiscal por RUC.",
         "requestBody": {
           "description": "Datos necesarios para realizar la consulta.",
@@ -417,6 +412,81 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponseRucDeuda"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ruc/trabajadores": {
+      "post": {
+        "description": "Consulta trabajadores por RUC.",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaRucTrabajadoresRequest"
+              },
+              "example": {
+                "ruc": "20123456789"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaRucTrabajadoresResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": [
+                    {
+                      "periodo": "2026-01",
+                      "numero_trabajadores": "19 111",
+                      "numero_pensionistas": "2",
+                      "numero_prestadores_de_servicio": "130"
+                    },
+                    {
+                      "periodo": "2026-02",
+                      "numero_trabajadores": "19 252",
+                      "numero_pensionistas": "2",
+                      "numero_prestadores_de_servicio": "132"
+                    },
+                    {
+                      "periodo": "2026-03",
+                      "numero_trabajadores": "20 350",
+                      "numero_pensionistas": "2",
+                      "numero_prestadores_de_servicio": "132"
+                    },
+                    {
+                      "periodo": "2026-04",
+                      "numero_trabajadores": "20 445",
+                      "numero_pensionistas": "2",
+                      "numero_prestadores_de_servicio": "140"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseRucTrabajadores"
                 },
                 "example": {
                   "success": false,
@@ -1021,12 +1091,70 @@
         "type": "object",
         "properties": {
           "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsultaRucTrabajadoresRequest": {
+        "type": "object",
+        "required": [
+          "ruc"
+        ],
+        "properties": {
+          "ruc": {
+            "type": "string",
+            "description": "El RUC a consultar.",
+            "example": "20123456789"
+          }
+        }
+      },
+      "ConsultaRucTrabajadoresResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
             "type": "boolean",
-            "description": "Indica si la consulta fue exitosa."
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
           },
           "message": {
             "type": "string",
-            "description": "Mensaje descriptivo del error."
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "periodo": {
+                "type": "string",
+                "description": "Período en formato YYYY-MM."
+              },
+              "numero_trabajadores": {
+                "type": "string",
+                "description": "Número de trabajadores declarados."
+              },
+              "numero_pensionistas": {
+                "type": "string",
+                "description": "Número de pensionistas."
+              },
+              "numero_prestadores_de_servicio": {
+                "type": "string",
+                "description": "Número de prestadores de servicio."
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseRucTrabajadores": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
           }
         }
       },
