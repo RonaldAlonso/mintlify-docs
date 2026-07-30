@@ -498,6 +498,62 @@
         }
       }
     },
+    "/ruc/omisiones-tributarias": {
+      "post": {
+        "description": "Consulta omisiones tributarias por RUC.",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaRucOmisionesRequest"
+              },
+              "example": {
+                "ruc": "20123456789"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaRucOmisionesResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": [
+                    {
+                      "periodo": "202601",
+                      "tipo": "PDT IGV - Renta",
+                      "fecha_presentacion": "-"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseRucOmisiones"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sunat/guia/xml/{numRuc}-{tipoDocumento}-{numSerieComprobante}-{numDocumentoComprobante}": {
       "get": {
         "summary": "Obtener XML de una guía",
@@ -1148,6 +1204,62 @@
         }
       },
       "ErrorResponseRucTrabajadores": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsultaRucOmisionesRequest": {
+        "type": "object",
+        "required": [
+          "ruc"
+        ],
+        "properties": {
+          "ruc": {
+            "type": "string",
+            "description": "El RUC a consultar.",
+            "example": "20123456789"
+          }
+        }
+      },
+      "ConsultaRucOmisionesResponse": {
+        "type": "object | null",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "periodo": {
+                "type": "string",
+                "description": "Período en formato YYYY-MM."
+              },
+              "tipo": {
+                "type": "string",
+                "description": "Tipo de declaración omisa (ej. PDT IGV - Renta)."
+              },
+              "fecha_presentacion": {
+                "type": "string",
+                "description": "Fecha de presentación. Puede ser \"-\" si no se presentó."
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseRucOmisiones": {
         "type": "object",
         "properties": {
           "success": {
