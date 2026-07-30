@@ -1640,6 +1640,90 @@
           }
         }
       }
+    },
+    "/sunat/comisiones-afp": {
+      "post": {
+        "description": "Consulta comisiones AFP por periodo.",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaComisionesRequest"
+              },
+              "example": {
+                "periodo": "2026-01"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaComisionesResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": [
+                    {
+                      "periodo": "2026-01",
+                      "afp": "HABITAT",
+                      "comision_fija": 0,
+                      "comision_flujo": 1.37,
+                      "comision_mixta_flujo": 0,
+                      "comision_mixta_saldo": 1.15,
+                      "prima_de_seguro": 1.27,
+                      "aporte_obligatorio": 10,
+                      "remunaracion_maxima": 12598.91
+                    },
+                    {
+                      "periodo": "2026-01",
+                      "afp": "INTEGRA",
+                      "comision_fija": 0,
+                      "comision_flujo": 1.25,
+                      "comision_mixta_flujo": 0,
+                      "comision_mixta_saldo": 0.58,
+                      "prima_de_seguro": 1.17,
+                      "aporte_obligatorio": 10,
+                      "remunaracion_maxima": 12598.91
+                    },
+                    {
+                      "periodo": "2026-01",
+                      "afp": "PRIMA",
+                      "comision_fija": 0,
+                      "comision_flujo": 1.2,
+                      "comision_mixta_flujo": 0,
+                      "comision_mixta_saldo": 1.35,
+                      "prima_de_seguro": 1.37,
+                      "aporte_obligatorio": 10,
+                      "remunaracion_maxima": 12598.91
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Recurso no encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseComisiones"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3152,6 +3236,26 @@
           }
         }
       },
+      "GuiajsonResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la operación fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "description": "Contenido XML codificado o serializado.",
+            "example": "Datos detallados de la respuesta"
+          }
+        }
+      },
       "ErrorResponseJson": {
         "type": "object",
         "properties": {
@@ -3163,6 +3267,86 @@
           "message": {
             "type": "string",
             "description": "Estado de la solicitud."
+          }
+        }
+      },
+      "ConsultaComisionesRequest": {
+        "type": "object",
+        "required": [
+          "periodo"
+        ],
+        "properties": {
+          "periodo": {
+            "type": "string",
+            "description": "Periodo de consulta en formato yyyy-MM.",
+            "example": "2026-01"
+          }
+        }
+      },
+      "ConsultaComisionesResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "periodo": {
+                "type": "string",
+                "description": "Periodo de la comisión en formato yyyy-MM."
+              },
+              "afp": {
+                "type": "string",
+                "description": "Nombre de la AFP."
+              },
+              "comision_fija": {
+                "licencia": "number",
+                "description": "Comisión fija (%)"
+              },
+              "comision_flujo": {
+                "licencia": "number",
+                "description": "Comisión por flujo (%)"
+              },
+              "comision_mixta_flujo": {
+                "licencia": "number",
+                "description": "Comisión mixta por flujo (%)"
+              },
+              "comision_mixta_saldo": {
+                "licencia": "number",
+                "description": "Comisión mixta por saldo (%)"
+              },
+              "prima_de_seguro": {
+                "licencia": "number",
+                "description": "Prima de seguro (%)"
+              },
+              "aporte_obligatorio": {
+                "licencia": "number",
+                "description": "Aporte obligatorio (%)"
+              },
+              "remunaracion_maxima": {
+                "licencia": "number",
+                "description": "Remuneración máxima asegurable (S/)"
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseComisiones": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
           }
         }
       }
