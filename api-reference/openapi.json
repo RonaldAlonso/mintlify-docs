@@ -1641,7 +1641,7 @@
         }
       }
     },
-    "/sunat/comisiones-afp": {
+    "/comisiones-afp": {
       "post": {
         "description": "Consulta comisiones AFP por periodo.",
         "requestBody": {
