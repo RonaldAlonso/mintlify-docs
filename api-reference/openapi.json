@@ -1095,6 +1095,67 @@
         }
       }
     },
+    "/licencia": {
+      "post": {
+        "description": "Consulta licencia de conducir por DNI.",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaLicenciaRequest"
+              },
+              "example": {
+                "dni": "123456789"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaLicenciaResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": {
+                    "numero_documento": "12345678",
+                    "nombre_completo": "CARLOS EDGARDO DELGADO RIVERA",
+                    "licencia": {
+                      "numero": "A10852329",
+                      "categoria": "A I",
+                      "fecha_expedicion": "",
+                      "fecha_vencimiento": "06/06/2026",
+                      "estado": "VIGENTE",
+                      "restricciones": "SIN RESTRICCIONES"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Recurso no encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseLicencia"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/sunat/xml": {
       "post": {
         "description": "Consulta XML por datos de comprobante.",
@@ -2595,6 +2656,62 @@
         }
       },
       "ErrorResponseDxml": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsultaLicenciaRequest": {
+        "type": "object",
+        "required": [
+          "dni"
+        ],
+        "properties": {
+          "dni": {
+            "type": "string",
+            "description": "El DNI a consultar.",
+            "example":"12345678"
+          }
+        }
+      },
+      "ConsultaLicenciaResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "numero_documento": {
+                "type": "string",
+                "description": "Numero de documento."
+              },
+              "nombre_completo": {
+                "type": "string",
+                "description": "Nombre completo de la persona."
+              },
+              "pdf_base64": {
+                "licencia": "array",
+                "description": "Datos de la licencia."
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseLicencia": {
         "type": "object",
         "properties": {
           "success": {
