@@ -695,7 +695,7 @@
                 },
                 "example": {
                   "success": true,
-                  "message": "exito",
+                  "message": "El DNI si cuenta con RUC",
                   "data": {
                     "dni": "20123456789"
                   }
@@ -816,7 +816,7 @@
                 },
                 "example": {
                   "success": true,
-                  "message": "ACEPTADO",
+                  "message": "exito",
                   "data": {
                     "numero": "001077238",
                     "nombres": "JUAN JOSE",
@@ -833,6 +833,61 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponseCe"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ci": {
+      "post": {
+        "description": "Consulta cédula de identidad por número.",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaCiRequest"
+              },
+              "example": {
+                "ci": "20260350"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaCiResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": {
+                    "numero": "20260350",
+                    "nombres": "JUAN JOSE",
+                    "apellido_paterno": "PEREZ",
+                    "apellido_materno": "GOMEZ"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Recurso no encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseCi"
                 },
                 "example": {
                   "success": false,
@@ -1913,6 +1968,66 @@
         }
       },
       "ErrorResponseCe": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsultaCiRequest": {
+        "type": "object",
+        "required": [
+          "ci"
+        ],
+        "properties": {
+          "ruc_emisor": {
+            "type": "string",
+            "description": "La cédula de identidad a consultar.",
+            "example": "000000111"
+          }
+        }
+      },
+      "ConsultaCiResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "numero": {
+                "type": "string",
+                "description": "Número del carnet de extranjería de la persona."
+              },
+              "nombres": {
+                "type": "string",
+                "description": "Nombres de la persona."
+              },
+              "apellido_paterno": {
+                "type": "string",
+                "description": "Apellido paterno de la persona."
+              },
+              "apellido_materno": {
+                "type": "string",
+                "description": "Apellido materno de la persona."
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseCi": {
         "type": "object",
         "properties": {
           "success": {
