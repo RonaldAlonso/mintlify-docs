@@ -789,6 +789,61 @@
         }
       }
     },
+    "/ce": {
+      "post": {
+        "description": "Consulta carnet de extranjería por número.",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaCeRequest"
+              },
+              "example": {
+                "ce": "000000111"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaCeResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "ACEPTADO",
+                  "data": {
+                    "numero": "001077238",
+                    "nombres": "JUAN JOSE",
+                    "apellido_paterno": "PEREZ",
+                    "apellido_materno": "GOMEZ"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Recurso no encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseCe"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sunat/guia/xml/{numRuc}-{tipoDocumento}-{numSerieComprobante}-{numDocumentoComprobante}": {
       "get": {
         "summary": "Obtener XML de una guía",
@@ -1723,7 +1778,6 @@
             "description": "Total del comprobante.",
             "example": "12345678"
           }
-          
         }
       },
       "ConsultaCpeResponse": {
@@ -1799,6 +1853,66 @@
         }
       },
       "ErrorResponseCpe": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsultaCeRequest": {
+        "type": "object",
+        "required": [
+          "ce"
+        ],
+        "properties": {
+          "ruc_emisor": {
+            "type": "string",
+            "description": "El carnet de extranjería a consultar.",
+            "example": "000000111"
+          }
+        }
+      },
+      "ConsultaCeResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "numero": {
+                "type": "string",
+                "description": "Número del carnet de extranjería de la persona."
+              },
+              "nombres": {
+                "type": "string",
+                "description": "Nombres de la persona."
+              },
+              "apellido_paterno": {
+                "type": "string",
+                "description": "Apellido paterno de la persona."
+              },
+              "apellido_materno": {
+                "type": "string",
+                "description": "Apellido materno de la persona."
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseCe": {
         "type": "object",
         "properties": {
           "success": {
