@@ -321,24 +321,22 @@
                 "example": {
                   "success": true,
                   "message": "exito",
-                  "data": [
-                    {
-                      "codigo": "0001",
-                      "tipo_de_establecimiento": "DOMICILIO FISCAL",
-                      "actividad_economica": "-",
-                      "direccion": "AV. NICOLÁS DE PIÉROLA.",
-                      "direccion_completa": "AV. NICOLÁS DE PIÉROLA., LIMA - LIMA - CERCADO DE LIMA",
-                      "departamento": "LIMA",
-                      "provincia": "LIMA",
-                      "distrito": "CERCADO DE LIMA",
-                      "ubigeo_sunat": "150101",
-                      "ubigeo": [
-                        "15",
-                        "1501",
-                        "150101"
-                      ]
-                    }
-                  ]
+                  "data": {
+                    "codigo": "0001",
+                    "tipo_de_establecimiento": "DOMICILIO FISCAL",
+                    "actividad_economica": "-",
+                    "direccion": "AV. NICOLÁS DE PIÉROLA.",
+                    "direccion_completa": "AV. NICOLÁS DE PIÉROLA., LIMA - LIMA - CERCADO DE LIMA",
+                    "departamento": "LIMA",
+                    "provincia": "LIMA",
+                    "distrito": "CERCADO DE LIMA",
+                    "ubigeo_sunat": "150101",
+                    "ubigeo": [
+                      "15",
+                      "1501",
+                      "150101"
+                    ]
+                  }
                 }
               }
             }
@@ -613,7 +611,7 @@
     },
     "/ruc/tipo_de_cambio": {
       "post": {
-        "description": "Consulta tipo de cambio por fecha..",
+        "description": "Consulta tipo de cambio por fecha.",
         "requestBody": {
           "description": "Datos necesarios para realizar la consulta.",
           "required": true,
@@ -639,18 +637,16 @@
                 "example": {
                   "success": true,
                   "message": "exito",
-                  "data": [
-                    {
-                      "moneda": "USD",
-                      "fecha_busqueda": "2026-01-05",
-                      "fecha_sunat": "2026-01-05",
-                      "venta": 3.381,
-                      "compra": 3.37,
-                      "date": "2026-01-05",
-                      "sale": 3.381,
-                      "purchase": 3.37
-                    }
-                  ]
+                  "data": {
+                    "moneda": "USD",
+                    "fecha_busqueda": "2026-01-05",
+                    "fecha_sunat": "2026-01-05",
+                    "venta": 3.381,
+                    "compra": 3.37,
+                    "date": "2026-01-05",
+                    "sale": 3.381,
+                    "purchase": 3.37
+                  }
                 }
               }
             }
@@ -665,6 +661,58 @@
                 "example": {
                   "success": false,
                   "message": "No se encontraron resultados"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dni-ruc": {
+      "post": {
+        "description": "Consulta si un DNI cuenta con RUC asociado.",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaDRRequest"
+              },
+              "example": {
+                "dni": "12345678"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaDRResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": {
+                    "dni": "20123456789"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDR"
+                },
+                "example": {
+                  "success": false,
+                  "message": "El DNI no cuenta con RUC"
                 }
               }
             }
@@ -1514,6 +1562,54 @@
         }
       },
       "ErrorResponseCambio": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsultaDRRequest": {
+        "type": "object",
+        "required": [
+          "dni"
+        ],
+        "properties": {
+          "dni": {
+            "type": "string",
+            "description": "Número de DNI de 8 dígitos.",
+            "example": "12345678"
+          }
+        }
+      },
+      "ConsultaDRResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "ruc": {
+                "type": "string",
+                "description": "Número de RUC asociado al DNI."
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseDR": {
         "type": "object",
         "properties": {
           "success": {
