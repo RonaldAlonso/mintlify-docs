@@ -1107,7 +1107,7 @@
                 "$ref": "#/components/schemas/ConsultaLicenciaRequest"
               },
               "example": {
-                "dni": "123456789"
+                "dni": "12345678"
               }
             }
           }
@@ -1203,6 +1203,58 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponseDxml"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sunat/xml-to-pdf": {
+      "post": {
+        "description": "Convierte XML a PDF. Obtén documento PDF desde archivo XML base64.",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaXmlPdfRequest"
+              },
+              "example": {
+                "file_base64": "PuZz0iVVRGLTgiPz48Um9....ZDwvRGF0YlbmNvZ"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaXmlPdfResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": {
+                    "pdf_base64": "BQAAAAIAEiWmVi2....qZ+bIw0AAH0ZAAAbAAAAU"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Recurso no encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseXmlPdf"
                 },
                 "example": {
                   "success": false,
@@ -2703,7 +2755,7 @@
                 "type": "string",
                 "description": "Nombre completo de la persona."
               },
-              "pdf_base64": {
+              "licencia": {
                 "licencia": "array",
                 "description": "Datos de la licencia."
               }
@@ -2712,6 +2764,55 @@
         }
       },
       "ErrorResponseLicencia": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsultaXmlPdfRequest": {
+        "type": "object",
+        "required": [
+          "file_base64"
+        ],
+        "properties": {
+          "file_base64": {
+            "type": "string",
+            "description": "Archivo XML codificado en base64.",
+            "example":"PD94bWxsbyBXb3JsZDwvRGF....0YT48L1Jvb3Q"
+          }
+        }
+      },
+      "ConsultaXmlPdfResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "pdf_base64": {
+                "type": "string",
+                "description": "Archivo ZIP codificado en Base64 que contiene el PDF generado."
+              }
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseXmlPdf": {
         "type": "object",
         "properties": {
           "success": {
