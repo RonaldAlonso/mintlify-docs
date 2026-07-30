@@ -1095,6 +1095,63 @@
         }
       }
     },
+    "/sunat/xml": {
+      "post": {
+        "description": "Consulta XML por datos de comprobante.",
+        "requestBody": {
+          "description": "Datos necesarios para realizar la consulta.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaDxmlRequest"
+              },
+              "example": {
+                "ruc": "ABC789",
+                "usuario": "ABC789",
+                "password": "ABC789",
+                "proveedor": "ABC789",
+                "tipo_doc": "ABC789",
+                "serie": "ABC789",
+                "correlativo": "ABC789"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultaDxmlResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "exito",
+                  "data": {
+                    "pdf_base64": "H0ZAAAbAAUEsDBBQOS92n...jY2MS0wMS1G"
+                  }
+              }
+            }
+          },
+          "400": {
+            "description": "Recurso no encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDxml"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sunat/guia/xml/{numRuc}-{tipoDocumento}-{numSerieComprobante}-{numDocumentoComprobante}": {
       "get": {
         "summary": "Obtener XML de una guía",
@@ -2460,6 +2517,83 @@
         }
       },
       "ErrorResponseRevision": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsultaDxmlRequest": {
+        "type": "object",
+        "required": [
+          "ruc",
+          "usuario",
+          "password",
+          "proveedor",
+          "tipo_doc",
+          "serie",
+          "correlativo"
+        ],
+        "properties": {
+          "ruc": {
+            "type": "string",
+            "description": "RUC de la empresa."
+          },
+          "usuario": {
+            "type": "string",
+            "description": "Usuario SOL."
+          },
+          "password": {
+            "type": "string",
+            "description": "Contraseña SOL."
+          },
+          "proveedor": {
+            "type": "string",
+            "description": "RUC del emisor del comprobante. Si es una venta (comprobante emitido por tu empresa), usa el mismo valor que el campo ruc. Si es una compra (comprobante que te emitió un tercero), indica el RUC de la empresa que te emitió la factura."
+          },
+          "tipo_doc": {
+            "type": "string",
+            "description": "Tipo de documento."
+          },
+          "serie": {
+            "type": "string",
+            "description": "Serie del comprobante."
+          },
+          "correlativo": {
+            "type": "string",
+            "description": "Número correlativo."
+          }
+        }
+      },
+      "ConsultaDxmlResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indica si la consulta fue exitosa.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensaje descriptivo del resultado.",
+            "example": "Exito"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "pdf_base64": {
+                "type": "string",
+                "description": "Archivo ZIP codificado en Base64 que contiene el PDF generado."
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponseDxml": {
         "type": "object",
         "properties": {
           "success": {
