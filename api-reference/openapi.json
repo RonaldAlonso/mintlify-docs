@@ -3307,31 +3307,31 @@
                 "description": "Nombre de la AFP."
               },
               "comision_fija": {
-                "licencia": "number",
+                "type": "number",
                 "description": "Comisión fija (%)"
               },
               "comision_flujo": {
-                "licencia": "number",
+                "type": "number",
                 "description": "Comisión por flujo (%)"
               },
               "comision_mixta_flujo": {
-                "licencia": "number",
+                "type": "number",
                 "description": "Comisión mixta por flujo (%)"
               },
               "comision_mixta_saldo": {
-                "licencia": "number",
+                "type": "number",
                 "description": "Comisión mixta por saldo (%)"
               },
               "prima_de_seguro": {
-                "licencia": "number",
+                "type": "number",
                 "description": "Prima de seguro (%)"
               },
               "aporte_obligatorio": {
-                "licencia": "number",
+                "type": "number",
                 "description": "Aporte obligatorio (%)"
               },
               "remunaracion_maxima": {
-                "licencia": "number",
+                "type": "number",
                 "description": "Remuneración máxima asegurable (S/)"
               }
             }
